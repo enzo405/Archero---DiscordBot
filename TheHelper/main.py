@@ -7,7 +7,7 @@ from typing import Optional
 import asyncio
 
 bot = commands.Bot(command_prefix = "?", help_command = None, case_insensitive  =True)
-channel_command = [736659714670198794, 948565096366481428, 948681408640073818, 889881030188748810]
+channel_command = ["text_channel_id"]
 db = Mydb.DatabaseHandler()
 
 #--------------------- EVENT ---------------------
@@ -18,7 +18,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-	if message.channel.id == 504560321772650537:
+	if message.channel.id == "text_channel_id":
 		await message.add_reaction("😍")
 	await bot.process_commands(message)
 
@@ -26,8 +26,8 @@ async def on_message(message):
 
 @bot.command(name="dbh_cp")
 async def dbhost_create_person(ctx, target: User, attaque:int, pv:int):
-	chat = bot.get_channel(952673377787711529)
-	user = await bot.fetch_user("382930544385851392")
+	chat = bot.get_channel("text_channel_id")
+	user = await bot.fetch_user("userid")
 	name = target.display_name.replace("'","").replace('"','')
 	if int(pv)/1.8 >= int(attaque) and ctx.author.id == user.id: 
 		await ctx.reply(f":white_check_mark: Tu viens d'enregistré les stats de <@{target.id}> (Atk :{attaque}, Pv :{pv})", delete_after = 60, mention_author=True)
@@ -52,8 +52,8 @@ async def dbhost_create_person(ctx, target: User, attaque:int, pv:int):
 
 @bot.command(name="dbh_ep")
 async def dbhost_edit_person(ctx, target: User, attaque:int, pv:int):
-	chat = bot.get_channel(952673377787711529)
-	user = await bot.fetch_user("382930544385851392")
+	chat = bot.get_channel("text_channel_id")
+	user = await bot.fetch_user("userid")
 	name = target.display_name.replace("'","").replace('"','')
 	if int(pv)/1.8 >= int(attaque) and ctx.author.id == user.id: 
 		await ctx.reply(f":white_check_mark: Tu viens d'enregistré les nouvelles stats de <@{target.id}> (Atk :{attaque}, Pv :{pv})", delete_after = 60, mention_author=True)
@@ -78,8 +78,8 @@ async def dbhost_edit_person(ctx, target: User, attaque:int, pv:int):
 
 @bot.command(name="dbh_rm")
 async def dbhost_remove_user(ctx, target: User):
-	chat = bot.get_channel(952673377787711529)
-	user = await bot.fetch_user("382930544385851392")
+	chat = bot.get_channel("text_channel_id")
+	user = await bot.fetch_user("userid")
 	if ctx.author.id == user.id: 
 		await ctx.reply(f"Une attente à la confirmation vient d'être envoyé dans #{chat} pour supprimer les stats de <@{target.id}>", mention_author=True)
 		confirm = await chat.send(f":white_check_mark: **{ctx.author}** à utilisé la commande ``{ctx.message.content}`` pour supprimer les stats de {target}")	
@@ -103,7 +103,7 @@ async def dbhost_remove_user(ctx, target: User):
 
 @bot.command(name="dbh_f2p")
 async def dbhost_free_to_play(ctx, target: User, response):
-	user = await bot.fetch_user("382930544385851392")
+	user = await bot.fetch_user("userid")
 	if ctx.author.id == user.id:
 		db.free_to_play(target.id, response)
 		await ctx.reply(f"{target} a maintenant `{response}` dans F2P",delete_after=15)
@@ -113,7 +113,7 @@ async def dbhost_free_to_play(ctx, target: User, response):
 
 @bot.command(name="dbh_help")
 async def dbhost_help_command(ctx):
-	user = await bot.fetch_user("382930544385851392")
+	user = await bot.fetch_user("userid")
 	em1=discord.Embed(
 	title="Commande pour Database Host",url="https://www.youtube.com/channel/UCJoV9pAMDRvD70JV7iLwA2g",color=0xFF5733)
 	em1.add_field(name="Créer un profil",value="``?dbh_cp <@123456789901> 10000 50000``", inline=False)
@@ -125,8 +125,8 @@ async def dbhost_help_command(ctx):
 
 @bot.command(name="dbh_ch")
 async def dbhost_set_chapter(ctx, target: User, nm:int, hm:int):
-	chat = bot.get_channel(952673377787711529)
-	user = await bot.fetch_user("382930544385851392")
+	chat = bot.get_channel("text_channel_id")
+	user = await bot.fetch_user("userid")
 	if ctx.author.id == user.id:
 		await ctx.reply(f"Une attente à la confirmation vient d'être envoyé dans #{chat} pour insérer les chapitres de <@{target.id}>", mention_author=True, delete_after=60)
 		confirm = await chat.send(f":white_check_mark: **{ctx.author}** à utilisé la commande ``{ctx.message.content}`` ! {target} aura maintenant Nm:{nm} et Hm:{hm} en chapitre")	
@@ -152,8 +152,8 @@ async def dbhost_set_chapter(ctx, target: User, nm:int, hm:int):
 
 @bot.command(name="stats")
 async def create_stats(ctx, attaque:int, pv:int):
-	chat = bot.get_channel(952673377787711529)
-	user = await bot.fetch_user(382930544385851392)
+	chat = bot.get_channel("text_channel_id")
+	user = await bot.fetch_user("userid")
 	name = str(ctx.author.display_name).replace("'","")
 	if int(pv)/1.8 >= int(attaque) and 1 <= attaque <= 64000 and 1<= pv <= 300000: 
 		await ctx.reply(f"✅ Vos stats viennent d'être envoyé à <@{user.id}> et sont maintenant en attente de confirmation !\nVeuillez m'envoyer un screen de vos stats svp (----><@{user.id}>)\nVous pouvez demander à avoir le statuts Free To Play (faites `?rank_help` pour + d'info)", delete_after = 60, mention_author=True)
@@ -180,8 +180,8 @@ async def create_stats(ctx, attaque:int, pv:int):
 
 @bot.command(name="edit")
 async def edit_stats(ctx, attaque:int, pv:int):
-	chat = bot.get_channel(952673377787711529)
-	user = await bot.fetch_user("382930544385851392")
+	chat = bot.get_channel("text_channel_id")
+	user = await bot.fetch_user("userid")
 	name = str(ctx.author.display_name).replace("'","")
 	if int(pv)/1.8 >= int(attaque) and 1 <= attaque <= 64000 and 1<= pv <= 300000: 
 		await ctx.reply(f"✅ Vos stats viennent d'être envoyé à <@{user.id}> et sont maintenant en attente de confirmation !\nVous pouvez demander à avoir le statuts Free To Play (faites `?rank_help` pour + d'info)", delete_after = 60, mention_author=True)
@@ -239,7 +239,7 @@ async def display_leaderboard(ctx):
 
 @bot.command()
 async def rank_help(ctx):
-	user = await bot.fetch_user("382930544385851392")
+	user = await bot.fetch_user("userid")
 	em1=discord.Embed(
 	title="Comment rentrer dans le classement ?",url="https://adarmy.herokuapp.com/classement/",color=0xFF5733)
 	em1.add_field(name="Créer un profil",value="?stats *attaque* *pv* \nVoici un exemple = ``?stats 10000 50000``", inline=False)
