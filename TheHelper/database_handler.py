@@ -3,7 +3,7 @@ import psycopg2.extensions
 
 class DatabaseHandler():
 	def __init__(self):
-		self.connect = psycopg2.connect(database ="d2gm319ojamf98" , user = "wiycckcyrozefh", password = "1d6e3b493a710e19a35a695cd1640b31e5abf38cf2dfb4487a1d86d8c011a707", host = "ec2-54-228-32-29.eu-west-1.compute.amazonaws.com", port = "5432")
+		self.connect = psycopg2.connect(database ="DATABASE_URL" , user = "USERNAME", password = "PASSWD", host = "HOSTNAME", port = "5432")
 		query1 ="DROP TABLE Stats" 
 		query = f"CREATE TABLE IF NOT EXISTS Stats(id BIGINT NOT NULL,username VARCHAR(33) NOT NULL,attaque INTEGER NOT NULL,pv INTEGER NOT NULL, F2P VARCHAR(8), ChapterNm INTEGER, ChapterHm INTEGER);"
 		cur = self.connect.cursor()
